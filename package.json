@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/drg-adaptive/api-gateway-request-signer",
+  "bugs": "https://github.com/drg-adaptive/mysql-insert-csv/issues",
   "author": "Ben Force <bforce@dresources.com>",
   "license": "MIT",
   "devDependencies": {
