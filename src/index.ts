@@ -5,6 +5,7 @@ import { ReadStream } from "fs";
 interface ParserArgs {
   numericColumns?: Array<string>;
   maxChars?: number;
+  escapeChar?: string;
 }
 
 interface MapValuesArgs {
@@ -41,16 +42,11 @@ export const CsvInsert = function(
   settings?: ParserArgs
 ) {
   const mapValues = createValueMapper(settings?.numericColumns ?? []);
-
   const executeStatement = createExecutor(uploader);
-
   const MAX_CHARS = settings?.maxChars ?? 64000;
+  const escapeChar = settings?.escapeChar ?? "\\";
 
-  return async (
-    readStream: ReadStream,
-    table_name: string,
-    escapeChar: string = "\\"
-  ) => {
+  return async (readStream: ReadStream, table_name: string) => {
     const data = await neatCsv(readStream, {
       mapValues,
       escape: escapeChar
@@ -81,7 +77,10 @@ export const CsvInsert = function(
 
       const newStatement = `(${columnData.join(",")})`;
 
-      if (statement.length + newStatement.length > MAX_CHARS) {
+      if (
+        !isNaN(MAX_CHARS) &&
+        statement.length + newStatement.length > MAX_CHARS
+      ) {
         await executeStatement(statement, idx);
         statement = "";
       }
