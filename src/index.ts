@@ -6,6 +6,7 @@ interface ParserArgs {
   numericColumns?: Array<string>;
   maxChars?: number;
   escapeChar?: string;
+  progressCallback?: ProgressCallback;
 }
 
 interface MapValuesArgs {
@@ -25,11 +26,16 @@ function createValueMapper(numericColumns: Array<string>) {
   };
 }
 
-function createExecutor(uploader: StatementExecutor) {
+function createExecutor(
+  uploader: StatementExecutor,
+  progressCallback: ProgressCallback,
+  tableName: string,
+  totalRows: number
+) {
   return async (statement: string, rowCount: number) => {
     try {
       await uploader(statement);
-      console.info(`${rowCount} total rows uploaded`);
+      progressCallback((rowCount / totalRows) * 100, tableName);
     } catch (ex) {
       console.error(`Error executing ${statement}`);
       throw new Error(ex.message);
@@ -37,12 +43,41 @@ function createExecutor(uploader: StatementExecutor) {
   };
 }
 
+type ProgressCallback = (progress: number, tableName: string) => void;
+
+const DefaultProgressCallback: ProgressCallback = (
+  progress: number,
+  tableName: string
+) =>
+  console.error(`${progress.toFixed(2)}% of records uploaded to ${tableName}`);
+
+function createNewValuesStatement(
+  columns: string[],
+  entry: any
+): string | undefined {
+  const columnData = columns
+    .map(key => entry[key])
+    .map(value => (value === undefined ? "NULL" : value));
+
+  if (!columnData.find(x => x !== "NULL")) {
+    return;
+  }
+
+  return `(${columnData.join(",")})`;
+}
+
+const createInsertStatement = (table_name: string, columns: string[]) =>
+  `INSERT INTO ${sqlstring.escapeId(table_name)} (${columns
+    .map(column_name => sqlstring.escapeId(column_name))
+    .join(",")}) VALUES `;
+
 export const CsvInsert = function(
   uploader: StatementExecutor,
   settings?: ParserArgs
 ) {
   const mapValues = createValueMapper(settings?.numericColumns ?? []);
-  const executeStatement = createExecutor(uploader);
+  const progressCallback =
+    settings?.progressCallback ?? DefaultProgressCallback;
   const MAX_CHARS = settings?.maxChars ?? 64000;
   const escapeChar = settings?.escapeChar ?? "\\";
 
@@ -52,30 +87,25 @@ export const CsvInsert = function(
       escape: escapeChar
     });
 
-    console.info(`Uploading ${data.length} entries in ${table_name}`);
-
     const columns = Object.keys(data[0]);
-    let insertStart = `INSERT INTO ${sqlstring.escapeId(
-      table_name
-    )} (${columns
-      .map(column_name => sqlstring.escapeId(column_name))
-      .join(",")}) VALUES `;
+    let insertStart = createInsertStatement(table_name, columns);
     let statement = "";
 
     let idx = 0;
 
+    const executeStatement = createExecutor(
+      uploader,
+      progressCallback,
+      table_name,
+      data.length
+    );
+
     for (const entry of data) {
       idx++;
 
-      const columnData = columns
-        .map(key => entry[key])
-        .map(value => (value === undefined ? "NULL" : value));
+      const newStatement = createNewValuesStatement(columns, entry);
 
-      if (!columnData.find(x => x !== "NULL")) {
-        continue;
-      }
-
-      const newStatement = `(${columnData.join(",")})`;
+      if (!newStatement) continue;
 
       if (
         !isNaN(MAX_CHARS) &&

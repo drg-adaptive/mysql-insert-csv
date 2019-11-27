@@ -30,3 +30,17 @@ const reader = fs.createReadStream("some/file/path.csv");
 
 await insert(reader, "some_table");
 ```
+
+### Progress Callback
+
+If you want to display the current progress outside of the default `std.err` output
+you can specify a callback that accepts the current progress and table name.
+
+```typescript
+const insert = CsvInsert(
+  (statement: string) => mysql.runSql(statement), 
+  {
+    progressCallback: (progress: number, tableName: string) => console.info(`Current progress: ${progress.toFixed(2)}%`)
+  }
+);
+```
