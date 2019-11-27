@@ -7,6 +7,7 @@ interface ParserArgs {
   maxChars?: number;
   escapeChar?: string;
   progressCallback?: ProgressCallback;
+  columnTransformers?: ColumnTransformers;
 }
 
 interface MapValuesArgs {
@@ -14,15 +15,26 @@ interface MapValuesArgs {
   value: any;
 }
 
+type ColumnTransformers = { [key: string]: (value: string) => string };
+
 type StatementExecutor = (statement: string) => Promise<any>;
 
-function createValueMapper(numericColumns: Array<string>) {
+function createValueMapper(
+  numericColumns: Array<string>,
+  columnTransformers: ColumnTransformers
+) {
   return (args: MapValuesArgs) => {
-    if (numericColumns?.indexOf(args.header) >= 0) {
-      return args.value;
+    let value = args.value;
+
+    if (columnTransformers[args.header]) {
+      value = columnTransformers[args.header](value);
     }
 
-    return args.value === "NULL" ? "NULL" : sqlstring.escape(args.value);
+    if (numericColumns?.indexOf(args.header) >= 0) {
+      return value;
+    }
+
+    return value === "NULL" ? "NULL" : sqlstring.escape(value);
   };
 }
 
@@ -75,7 +87,11 @@ export const CsvInsert = function(
   uploader: StatementExecutor,
   settings?: ParserArgs
 ) {
-  const mapValues = createValueMapper(settings?.numericColumns ?? []);
+  const columnTransformers = settings?.columnTransformers ?? {};
+  const mapValues = createValueMapper(
+    settings?.numericColumns ?? [],
+    columnTransformers
+  );
   const progressCallback =
     settings?.progressCallback ?? DefaultProgressCallback;
   const MAX_CHARS = settings?.maxChars ?? 64000;

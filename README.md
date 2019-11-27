@@ -44,3 +44,19 @@ const insert = CsvInsert(
   }
 );
 ```
+
+### Column Transformers
+
+If a specific column needs to be modified before insert, you can do that by
+defining column transformers.
+
+```typescript
+const insert = CsvInsert(
+  (statement: string) => mysql.runSql(statement), 
+  {
+    columnTransformers: {
+      some_column: (value: string) => value.toUpperCase()
+    }
+  }
+);
+```
