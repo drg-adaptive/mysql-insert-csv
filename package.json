@@ -9,11 +9,11 @@
   "author": "Ben Force <bforce@dresources.com>",
   "license": "MIT",
   "devDependencies": {
-    "@semantic-release/changelog": "^3.0.6",
-    "@semantic-release/commit-analyzer": "^6.3.3",
+    "@semantic-release/changelog": "^3.0.5",
+    "@semantic-release/commit-analyzer": "^6.3.2",
     "@semantic-release/github": "^5.5.5",
     "@semantic-release/npm": "^5.3.4",
-    "@semantic-release/release-notes-generator": "^7.3.4",
+    "@semantic-release/release-notes-generator": "^7.3.2",
     "@types/sqlstring": "^2.2.1",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
@@ -22,7 +22,7 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.25.2",
-    "semantic-release": "^15.13.31",
+    "semantic-release": "^15.13.30",
     "sqlstring": "^2.3.1",
     "typescript": "^3.7.2"
   },
