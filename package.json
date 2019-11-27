@@ -1,6 +1,6 @@
 {
   "name": "mysql-insert-csv",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Iterate over csv files and insert them into a mysql database",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
