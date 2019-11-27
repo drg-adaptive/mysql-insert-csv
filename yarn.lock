@@ -170,7 +170,7 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@semantic-release/changelog@^3.0.6":
+"@semantic-release/changelog@^3.0.5":
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/@semantic-release/changelog/-/changelog-3.0.6.tgz#9d68d68bf732cbba1034c028bb6720091f783b2a"
   integrity sha512-9TqPL/VarLLj6WkUqbIqFiY3nwPmLuKFHy9fe/LamAW5s4MEW/ig9zW9vzYGOUVtWdErGJ1J62E3Edkamh3xaQ==
@@ -180,7 +180,7 @@
     fs-extra "^8.0.0"
     lodash "^4.17.4"
 
-"@semantic-release/commit-analyzer@^6.1.0", "@semantic-release/commit-analyzer@^6.3.3":
+"@semantic-release/commit-analyzer@^6.1.0", "@semantic-release/commit-analyzer@^6.3.2":
   version "6.3.3"
   resolved "https://registry.yarnpkg.com/@semantic-release/commit-analyzer/-/commit-analyzer-6.3.3.tgz#885f7e46e2f0aef23a23be0904dbf18d6ece45ca"
   integrity sha512-Pyv1ZL2u5AIOY4YbxFCAB5J1PEh5yON8ylbfiPiriDGGW6Uu1U3Y8lysMtWu+FUD5x7tSnyIzhqx0+fxPxqbgw==
@@ -237,7 +237,7 @@
     registry-auth-token "^4.0.0"
     tempy "^0.3.0"
 
-"@semantic-release/release-notes-generator@^7.1.2", "@semantic-release/release-notes-generator@^7.3.4":
+"@semantic-release/release-notes-generator@^7.1.2", "@semantic-release/release-notes-generator@^7.3.2":
   version "7.3.4"
   resolved "https://registry.yarnpkg.com/@semantic-release/release-notes-generator/-/release-notes-generator-7.3.4.tgz#32882dbd74129c0a0dd8a4d1929eefae76be7e0e"
   integrity sha512-d5YlpzuWrsq1UrFeOgv6vIb11R0ICRRJwNzSM4NpljF8hZBYxaaNOw3FbfSufgOLiyvLznhh3/91QoRVPKVwqw==
@@ -4794,7 +4794,7 @@ safe-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-semantic-release@^15.13.31:
+semantic-release@^15.13.30:
   version "15.13.31"
   resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-15.13.31.tgz#75560e61562b5b7aa3e66256fd3454683c6508a6"
   integrity sha512-mrtYkH4p0FvXIRFCsr2r5il/A+Uj7oeeq+dgyojAbr4Tzywv9AlCYHeE3A8U3eE4bMJPiBV4YnQRsk1QS8yDDw==
