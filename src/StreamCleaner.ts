@@ -1,6 +1,6 @@
 import { Transform, TransformCallback } from "stream";
 
-export const MATCH_NON_PRINTABLE = /[^\000-\031]+/gi;
+export const MATCH_NON_PRINTABLE = /[\u0000-\u0031]+/g;
 
 export default class StreamCleaner extends Transform {
   constructor(private readonly pattern: RegExp) {
