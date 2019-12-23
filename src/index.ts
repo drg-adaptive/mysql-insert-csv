@@ -1,6 +1,10 @@
 import neatCsv from "neat-csv";
 import sqlstring from "sqlstring";
 import { ReadStream } from "fs";
+import StreamCleaner, { MATCH_NON_PRINTABLE } from "StreamCleaner";
+import { Readable } from "stream";
+
+export { MATCH_NON_PRINTABLE } from "StreamCleaner";
 
 interface ParserArgs {
   numericColumns?: Array<string>;
@@ -8,6 +12,7 @@ interface ParserArgs {
   escapeChar?: string;
   progressCallback?: ProgressCallback;
   columnTransformers?: ColumnTransformers;
+  filterInput?: boolean | RegExp;
 }
 
 interface MapValuesArgs {
@@ -98,7 +103,17 @@ export const CsvInsert = function(
   const escapeChar = settings?.escapeChar ?? "\\";
 
   return async (readStream: ReadStream, table_name: string) => {
-    const data = await neatCsv(readStream, {
+    let sourceStream: Readable = readStream;
+
+    if (settings.filterInput) {
+      const filter =
+        settings.filterInput === true
+          ? MATCH_NON_PRINTABLE
+          : settings.filterInput;
+      sourceStream = sourceStream.pipe(new StreamCleaner(filter));
+    }
+
+    const data = await neatCsv(sourceStream, {
       mapValues,
       escape: escapeChar
     });

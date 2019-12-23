@@ -1,6 +1,7 @@
-const commonjs = require("rollup-plugin-commonjs");
-const typescript = require("rollup-plugin-typescript2");
-const resolve = require("rollup-plugin-node-resolve");
+import commonjs from "rollup-plugin-commonjs";
+import typescript from "rollup-plugin-typescript2";
+import resolve from "rollup-plugin-node-resolve";
+import builtins from "builtin-modules";
 
 module.exports = {
   input: "./src/index.ts",
@@ -10,21 +11,15 @@ module.exports = {
     exports: "named"
   },
   plugins: [
-    // @ts-ignore
     typescript({
-      lib: ["es5", "es6"],
-      target: "es6",
-      typescript: require("typescript"),
-      module: "CommonJS"
+      useTsconfigDeclarationDir: true,
+      objectHashIgnoreUnknownHack: true,
+      typescript: require("typescript")
     }),
-    // @ts-ignore
-    commonjs({
-      extensions: [".js", ".ts"]
-    }),
-    // @ts-ignore
+    commonjs(),
     resolve({
-      preferBuiltins: true,
-      extensions: [".js", ".ts"]
+      preferBuiltins: true
     })
-  ]
+  ],
+  external: [...builtins]
 };

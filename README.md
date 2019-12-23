@@ -37,12 +37,10 @@ If you want to display the current progress outside of the default `std.err` out
 you can specify a callback that accepts the current progress and table name.
 
 ```typescript
-const insert = CsvInsert(
-  (statement: string) => mysql.runSql(statement), 
-  {
-    progressCallback: (progress: number, tableName: string) => console.info(`Current progress: ${progress.toFixed(2)}%`)
-  }
-);
+const insert = CsvInsert((statement: string) => mysql.runSql(statement), {
+  progressCallback: (progress: number, tableName: string) =>
+    console.info(`Current progress: ${progress.toFixed(2)}%`)
+});
 ```
 
 ### Column Transformers
@@ -51,12 +49,24 @@ If a specific column needs to be modified before insert, you can do that by
 defining column transformers.
 
 ```typescript
-const insert = CsvInsert(
-  (statement: string) => mysql.runSql(statement), 
-  {
-    columnTransformers: {
-      some_column: (value: string) => value.toUpperCase()
-    }
+const insert = CsvInsert((statement: string) => mysql.runSql(statement), {
+  columnTransformers: {
+    some_column: (value: string) => value.toUpperCase()
   }
-);
+});
+```
+
+### Remove Non Printable Characters
+
+Sometimes non-printable characters can get added to a file when its edited using
+an application like Excel. To avoid running into problems, you can set the `filterInput`
+argument to either `true` or a regular expression to select the characters to be removed.
+
+The default selector is `/[^\000-\031]+/gi`, this should remove all non-printable
+characters.
+
+```typescript
+const insert = CsvInsert((statement: string) => mysql.runSql(statement), {
+  filterInput: true
+});
 ```

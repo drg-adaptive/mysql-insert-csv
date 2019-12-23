@@ -9,6 +9,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "declaration": true
-  }
+    "declaration": true,
+    "declarationDir": "./dist"
+  },
+  "exclude": ["src/**/*.test.ts", "dist/**/*", "__tests__/**/*"]
 }
