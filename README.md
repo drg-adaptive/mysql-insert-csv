@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/drg-adaptive/mysql-insert-csv.svg?branch=master)](https://travis-ci.org/drg-adaptive/mysql-insert-csv)
 [![Maintainability](https://api.codeclimate.com/v1/badges/fbabb0d394cabc87e845/maintainability)](https://codeclimate.com/github/drg-adaptive/mysql-insert-csv/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/fbabb0d394cabc87e845/test_coverage)](https://codeclimate.com/github/drg-adaptive/mysql-insert-csv/test_coverage)
 [![npm version](https://badge.fury.io/js/mysql-insert-csv.svg)](https://badge.fury.io/js/mysql-insert-csv)
 
 Easily insert CSV rows into a MySQL database table.
